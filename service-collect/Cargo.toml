@@ -1,0 +1,10 @@
+[package]
+name = "service-collect"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+async-trait = "0.1.88"
+repository-click-house = { path = "../repository-click-house" }
+anyhow = "1.0.98"
+uuid = { version = "1.17.0", features = ["v4"] }

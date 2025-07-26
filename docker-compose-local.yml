@@ -1,0 +1,17 @@
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    environment:
+      - CLICKHOUSE_USER=admin
+      - CLICKHOUSE_PASSWORD=password1234
+    ports:
+      - "8123:8123"   # HTTP
+      - "9000:9000"   # Native protocol (TCP)
+    volumes:
+      - ./data/clickhouse/data:/var/lib/clickhouse          # 데이터 볼륨
+      - ./clickhouse-config.xml:/help/clickhouse-server/clickhouse-config.xml
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144

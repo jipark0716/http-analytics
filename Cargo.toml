@@ -1,0 +1,4 @@
+[workspace]
+members = [
+    "http-collect", "repository-click-house", "service-collect",
+]
