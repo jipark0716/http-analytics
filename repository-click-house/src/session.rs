@@ -4,13 +4,16 @@ use clickhouse::Row;
 use serde::Serialize;
 use std::error::Error;
 use std::sync::Arc;
+use chrono::Utc;
 use uuid::Uuid;
 
 #[derive(Debug, Serialize, Row)]
 pub struct Session {
     client_id: i32,
+    #[serde(with = "uuid::serde::compact")]
     uuid: Uuid,
-    created_at: chrono::DateTime<chrono::Utc>,
+    #[serde(with = "chrono::serde::ts_microseconds")]
+    created_at: chrono::DateTime<Utc>,
 }
 
 #[async_trait]
@@ -18,13 +21,13 @@ pub trait SessionRepository: Send + Sync {
     async fn create(&self, client_id: i32) -> anyhow::Result<Uuid, Box<dyn Error>>;
 }
 
-struct SessionRepositoryImpl {
+pub struct SessionRepositoryImpl {
     db_context: Arc<DbContext>,
 }
 
 impl SessionRepositoryImpl {
-    fn new(db_context: Arc<DbContext>) -> Self {
-        Self { db_context }
+    pub fn new(db_context: Arc<DbContext>) -> Arc<Self> {
+        Arc::new(Self { db_context })
     }
 }
 
@@ -36,7 +39,7 @@ impl SessionRepository for SessionRepositoryImpl {
         let session = Session {
             client_id,
             uuid,
-            created_at: chrono::Utc::now(),
+            created_at: Utc::now(),
         };
 
         InsertBuffer::push(self.db_context.insert_sessions.clone(), session).await?;

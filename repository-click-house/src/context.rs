@@ -1,10 +1,10 @@
-use std::error::Error;
+use crate::session::Session;
 use clickhouse::{Client, Row};
 use serde::Serialize;
+use std::error::Error;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
-use crate::session::Session;
 
 pub struct DbContext {
     client: Arc<Client>,
@@ -13,9 +13,13 @@ pub struct DbContext {
 
 impl DbContext {
     pub fn new() -> Arc<Self> {
-        let client = Arc::new(Client::default()
+        let client = Arc::new(
+            Client::default()
                 .with_url("http://localhost:8123")
-                .with_database("event"));
+                .with_user("admin")
+                .with_password("password1234")
+                .with_database("event"),
+        );
 
         Arc::new(Self {
             client: client.clone(),
@@ -55,7 +59,9 @@ where
         this.buffer.push(row);
 
         if this.buffer.len() >= this.batch_size {
-            this.flush_locked().await.map_err(|e| format!("error lock {e}"))?;
+            this.flush_locked()
+                .await
+                .map_err(|e| format!("error lock {e}"))?;
         }
         Ok(())
     }

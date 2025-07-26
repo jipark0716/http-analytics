@@ -15,10 +15,10 @@ pub struct SessionServiceImpl {
 }
 
 impl SessionServiceImpl {
-    pub fn new(click_house_db_context: Arc<dyn SessionRepository>) -> Self {
-        Self {
+    pub fn new(click_house_db_context: Arc<dyn SessionRepository>) -> Arc<Self> {
+        Arc::new(Self {
             click_house_db_context,
-        }
+        })
     }
 }
 

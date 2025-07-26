@@ -6,11 +6,13 @@ use crate::event::collect;
 use actix_web::{web, App, HttpServer, Responder};
 use serde::Serialize;
 use crate::response::SimpleResponse;
+use crate::status::AppStatus;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
+            .app_data(web::Data::new(AppStatus::new()))
             .service(collect)
             .default_service(web::route().to(not_found))
     })
