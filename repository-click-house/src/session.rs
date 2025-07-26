@@ -35,7 +35,7 @@ impl SessionRepository for SessionRepositoryImpl {
 
         let session = Session {
             client_id,
-            uuid: uuid,
+            uuid,
             created_at: chrono::Utc::now(),
         };
 
