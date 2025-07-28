@@ -10,7 +10,7 @@ use crate::event::Event;
 pub struct DbContext {
     client: Arc<Client>,
     pub insert_sessions: Arc<Mutex<InsertBuffer<Session>>>,
-    pub event_sessions: Arc<Mutex<InsertBuffer<Event>>>,
+    pub insert_event: Arc<Mutex<InsertBuffer<Event>>>,
 }
 
 impl DbContext {
@@ -26,7 +26,7 @@ impl DbContext {
         Arc::new(Self {
             client: client.clone(),
             insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", 10000),
-            event_sessions: InsertBuffer::<Event>::new(client.clone(), "event", 10000),
+            insert_event: InsertBuffer::<Event>::new(client.clone(), "event", 10000),
         })
     }
 }

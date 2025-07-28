@@ -11,13 +11,13 @@ pub trait SessionService: Send + Sync {
 }
 
 pub struct SessionServiceImpl {
-    click_house_db_context: Arc<dyn SessionRepository>,
+    repository: Arc<dyn SessionRepository>,
 }
 
 impl SessionServiceImpl {
     pub fn new(click_house_db_context: Arc<dyn SessionRepository>) -> Arc<Self> {
         Arc::new(Self {
-            click_house_db_context,
+            repository: click_house_db_context,
         })
     }
 }
@@ -25,6 +25,6 @@ impl SessionServiceImpl {
 #[async_trait]
 impl SessionService for SessionServiceImpl {
     async fn create(&self, client_id: i32) -> Result<Uuid, Box<dyn Error>> {
-        self.click_house_db_context.create(client_id).await
+        self.repository.create(client_id).await
     }
 }
