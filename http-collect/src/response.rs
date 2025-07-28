@@ -1,8 +1,11 @@
-use std::fmt;
 use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, Responder, ResponseError};
 use serde::Serialize;
+use std::error::Error;
+use std::fmt;
+use std::fmt::{Display, Formatter};
+use validator::ValidationErrors;
 
 pub const NOT_FOUND_RESPONSE: SimpleResponse = SimpleResponse {
     code: 404,
@@ -28,24 +31,56 @@ impl Responder for SimpleResponse {
     }
 }
 
-#[derive(Serialize, Debug)]
-pub struct ErrResponse {
-    pub code: u16,
-    pub message: String,
+#[derive(Debug)]
+pub enum ErrResponse {
+    Validation(ValidationErrorResponse),
+    BasicError(BasicErrorErrorResponse),
+    Unknown(anyhow::Error),
 }
 
-impl fmt::Display for ErrResponse {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} (code {})", self.message, self.code)
+impl Display for ErrResponse {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self)
     }
 }
 
 impl ResponseError for ErrResponse {
     fn error_response(&self) -> HttpResponse {
-        HttpResponse::build(
-            StatusCode::from_u16(self.code)
-                .unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
-        )
-        .json(self)
+        match self {
+            Self::Validation(e) => HttpResponse::build(
+                StatusCode::from_u16(e.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
+            )
+            .json(e),
+            Self::BasicError(e) => HttpResponse::build(
+                StatusCode::from_u16(e.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
+            )
+            .json(e),
+            Self::Unknown(e) => HttpResponse::InternalServerError().body(e.to_string()),
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub struct ValidationErrorResponse {
+    pub code: u16,
+    pub message: String,
+    pub error: ValidationErrors,
+}
+
+impl From<ValidationErrorResponse> for ErrResponse {
+    fn from(e: ValidationErrorResponse) -> Self {
+        ErrResponse::Validation(e)
+    }
+}
+
+#[derive(Debug, Serialize)]
+pub struct BasicErrorErrorResponse {
+    pub code: u16,
+    pub message: String,
+}
+
+impl From<BasicErrorErrorResponse> for ErrResponse {
+    fn from(e: BasicErrorErrorResponse) -> Self {
+        ErrResponse::BasicError(e)
     }
 }

@@ -1,11 +1,11 @@
+use crate::event::Event;
 use crate::session::Session;
 use clickhouse::{Client, Row};
 use serde::Serialize;
-use std::error::Error;
+use std::mem;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
-use crate::event::Event;
 
 pub struct DbContext {
     client: Arc<Client>,
@@ -34,7 +34,8 @@ impl DbContext {
 pub struct InsertBuffer<T> {
     client: Arc<Client>,
     table: &'static str,
-    buffer: Vec<T>,
+    buffer1: Vec<T>,
+    buffer2: Vec<T>,
     batch_size: usize,
     last_flush: Instant,
 }
@@ -47,7 +48,8 @@ where
         let this = Arc::new(Mutex::new(Self {
             client,
             table,
-            buffer: Vec::with_capacity(batch_size),
+            buffer1: Vec::with_capacity(batch_size),
+            buffer2: Vec::with_capacity(batch_size),
             batch_size,
             last_flush: Instant::now(),
         }));
@@ -57,11 +59,11 @@ where
         this
     }
 
-    pub async fn push(buffer: Arc<Mutex<Self>>, row: T) -> anyhow::Result<(), Box<dyn Error>> {
+    pub async fn push(buffer: Arc<Mutex<Self>>, row: T) -> anyhow::Result<()> {
         let mut this = buffer.lock().await;
-        this.buffer.push(row);
+        this.buffer1.push(row);
 
-        if this.buffer.len() >= this.batch_size {
+        if this.buffer1.len() >= this.batch_size {
             if let Err(e) = this.flush_locked().await {
                 eprintln!("flush error: {e}");
             }
@@ -70,12 +72,14 @@ where
     }
 
     async fn flush_locked(&mut self) -> anyhow::Result<()> {
-        if self.buffer.is_empty() {
+        if self.buffer1.is_empty() {
             return Ok(());
         }
 
+        mem::swap(&mut self.buffer1, &mut self.buffer2);
+
         let mut insert = self.client.insert(self.table)?;
-        for row in self.buffer.drain(..) {
+        for row in mem::take(&mut self.buffer2) {
             insert.write(&row).await?;
         }
         insert.end().await?;
@@ -88,9 +92,14 @@ where
             let mut interval = tokio::time::interval(Duration::from_secs(10));
             loop {
                 interval.tick().await;
-                let mut this = buffer.lock().await;
-                if this.last_flush.elapsed() >= Duration::from_secs(60) {
-                    let _ = this.flush_locked().await;
+                let should_flush = {
+                    let this = buffer.lock().await;
+                    this.last_flush.elapsed() >= Duration::from_secs(60)
+                };
+
+                if should_flush {
+                    let mut this = buffer.lock().await;
+                    let _ = this.flush_locked().await; // 내부에서 락 짧게만 잡히도록 설계
                 }
             }
         });

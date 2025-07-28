@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 #[async_trait]
 pub trait CollectService : Send + Sync {
-    async fn create_start_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid, Box<dyn Error>>;
+    async fn create_start_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid>;
 }
 
 pub struct CollectServiceImpl {
@@ -14,16 +14,16 @@ pub struct CollectServiceImpl {
 }
 
 impl CollectServiceImpl {
-    pub fn new(repository: Arc<dyn EventRepository>) -> Self {
-        Self {
+    pub fn new(repository: Arc<dyn EventRepository>) -> Arc<Self> {
+        Arc::new(Self {
             repository
-        }
+        })
     }
 }
 
 #[async_trait]
 impl CollectService for CollectServiceImpl {
-    async fn create_start_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid, Box<dyn Error>> {
-        self.repository.create_view_product_event(client_id, uuid, product_id)
+    async fn create_start_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid> {
+        self.repository.create_view_product_event(client_id, uuid, product_id).await
     }
 }

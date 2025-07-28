@@ -1,8 +1,8 @@
-use crate::response::ErrResponse;
+use crate::response::{BasicErrorErrorResponse, ErrResponse};
 use crate::status::AppStatus;
 use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{HttpResponse, Responder, post, web};
 use serde::Serialize;
 use uuid::Uuid;
 
@@ -10,15 +10,15 @@ use uuid::Uuid;
 async fn create_session(ctx: web::Data<AppStatus>) -> Result<CreateSessionResponse, ErrResponse> {
     let service = &ctx.session_service;
 
-    let uuid = service.create(1).await.map_err(|e| ErrResponse {
-        code: 500,
-        message: format!("error create session {e}"),
-    })?;
+    let uuid = service
+        .create(1)
+        .await
+        .map_err(|e| BasicErrorErrorResponse {
+            code: 500,
+            message: format!("fail create session: {:?}", e)
+        })?;
 
-    Ok(CreateSessionResponse {
-        code: 200,
-        uuid,
-    })
+    Ok(CreateSessionResponse { code: 200, uuid })
 }
 
 #[derive(Serialize)]

@@ -36,7 +36,7 @@ pub struct Event {
 
 #[async_trait]
 pub trait EventRepository: Send + Sync {
-    async fn create_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid, Box<dyn Error>>;
+    async fn create_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid>;
 }
 
 pub struct EventRepositoryImpl {
@@ -51,7 +51,7 @@ impl EventRepositoryImpl {
 
 #[async_trait]
 impl EventRepository for EventRepositoryImpl {
-    async fn create_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid, Box<dyn Error>>{
+    async fn create_view_product_event(&self, client_id: i32, uuid: Uuid, product_id: String) -> anyhow::Result<Uuid>{
         let event_id = Uuid::new_v4();
 
         let event = Event {

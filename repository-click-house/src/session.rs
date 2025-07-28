@@ -18,7 +18,7 @@ pub struct Session {
 
 #[async_trait]
 pub trait SessionRepository: Send + Sync {
-    async fn create(&self, client_id: i32) -> anyhow::Result<Uuid, Box<dyn Error>>;
+    async fn create(&self, client_id: i32) -> anyhow::Result<Uuid>;
 }
 
 pub struct SessionRepositoryImpl {
@@ -33,7 +33,7 @@ impl SessionRepositoryImpl {
 
 #[async_trait]
 impl SessionRepository for SessionRepositoryImpl {
-    async fn create(&self, client_id: i32) -> anyhow::Result<Uuid, Box<dyn Error>> {
+    async fn create(&self, client_id: i32) -> anyhow::Result<Uuid> {
         let uuid = Uuid::new_v4();
 
         let session = Session {
