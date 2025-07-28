@@ -11,4 +11,4 @@ clickhouse = "0.13.3"
 uuid = { version = "1", features = ["serde", "v4"] }
 anyhow = "1.0.98"
 tokio = "1.46.1"
-time = "0.3.41"
+sea-orm = "1.1.14"

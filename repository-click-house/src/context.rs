@@ -5,10 +5,12 @@ use std::error::Error;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
+use crate::event::Event;
 
 pub struct DbContext {
     client: Arc<Client>,
     pub insert_sessions: Arc<Mutex<InsertBuffer<Session>>>,
+    pub event_sessions: Arc<Mutex<InsertBuffer<Event>>>,
 }
 
 impl DbContext {
@@ -23,7 +25,8 @@ impl DbContext {
 
         Arc::new(Self {
             client: client.clone(),
-            insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", 2),
+            insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", 10000),
+            event_sessions: InsertBuffer::<Event>::new(client.clone(), "event", 10000),
         })
     }
 }
@@ -59,9 +62,9 @@ where
         this.buffer.push(row);
 
         if this.buffer.len() >= this.batch_size {
-            this.flush_locked()
-                .await
-                .map_err(|e| format!("error lock {e}"))?;
+            if let Err(e) = this.flush_locked().await {
+                eprintln!("flush error: {e}");
+            }
         }
         Ok(())
     }

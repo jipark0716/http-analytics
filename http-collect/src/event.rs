@@ -1,15 +1,9 @@
-use crate::response::ErrResponse;
-use crate::{response, status::AppStatus, SimpleResponse};
 use actix_web::{post, web};
+use crate::response::ErrResponse;
+use crate::session::CreateSessionResponse;
+use crate::status::AppStatus;
 
-#[post("/api/v1/collect")]
-async fn collect(ctx: web::Data<AppStatus>) -> Result<SimpleResponse, ErrResponse> {
-    let service = &ctx.session_service;
+#[post("/api/v1/events/login")]
+async fn create(ctx: web::Data<AppStatus>) -> Result<CreateSessionResponse, ErrResponse> {
 
-    service.create(1).await.map_err(|e| ErrResponse {
-        code: 500,
-        message: format!("error create session {e}"),
-    })?;
-
-    Ok(response::SUCCESS_RESPONSE)
 }

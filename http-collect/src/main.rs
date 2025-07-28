@@ -1,8 +1,9 @@
-mod event;
+mod session;
 mod response;
 mod status;
+mod event;
 
-use crate::event::collect;
+use crate::session::create_session;
 use actix_web::{web, App, HttpServer, Responder};
 use serde::Serialize;
 use crate::response::SimpleResponse;
@@ -13,7 +14,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
             .app_data(web::Data::new(AppStatus::new()))
-            .service(collect)
+            .service(create_session)
             .default_service(web::route().to(not_found))
     })
     .bind(("127.0.0.1", 8080))?

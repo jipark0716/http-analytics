@@ -8,3 +8,4 @@ actix-web = "4.11.0"
 serde = { version = "1.0.219", features = ["derive"] }
 service-collect = { path = "../service-collect" }
 repository-click-house = { path = "../repository-click-house" }
+uuid = { version = "1.17.0", features = ["v4"] }
