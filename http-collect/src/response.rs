@@ -2,7 +2,6 @@ use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, Responder, ResponseError};
 use serde::Serialize;
-use std::error::Error;
 use std::fmt;
 use std::fmt::{Display, Formatter};
 use validator::ValidationErrors;

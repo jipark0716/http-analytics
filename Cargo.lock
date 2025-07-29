@@ -566,8 +566,10 @@ dependencies = [
  "serde",
  "static_assertions",
  "thiserror 1.0.69",
+ "time",
  "tokio",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -590,6 +592,10 @@ checksum = "4ca0197aee26d1ae37445ee532fefce43251d24cc7c166799f4d46817f1d3973"
 dependencies = [
  "crossbeam-utils",
 ]
+
+[[package]]
+name = "config"
+version = "0.1.0"
 
 [[package]]
 name = "const-oid"
@@ -2181,6 +2187,7 @@ dependencies = [
  "sea-orm",
  "serde",
  "serde_repr",
+ "time",
  "tokio",
  "uuid",
 ]
@@ -2584,6 +2591,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "repository-click-house",
+ "time",
  "uuid",
 ]
 
