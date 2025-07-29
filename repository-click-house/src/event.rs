@@ -1,19 +1,17 @@
-use std::error::Error;
-use std::sync::Arc;
+use crate::context::{DbContext, InsertBuffer};
 use async_trait::async_trait;
 use chrono::Utc;
 use clickhouse::Row;
 use sea_orm::entity::prelude::*;
-use sea_orm::sea_query::Nullable;
 use serde::Serialize;
+use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::sync::Arc;
 use uuid::Uuid;
-use crate::context::{DbContext, InsertBuffer};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, EnumIter, DeriveActiveEnum)]
-#[sea_orm(rs_type = "i32", db_type = "Integer")]
+#[derive(Debug, Serialize_repr, Deserialize_repr)]
+#[repr(u8)]
 pub enum EventType {
-    #[sea_orm(num_value = 1)]
-    StartViewProduct,
+    StartViewProduct = 1,
 }
 
 #[derive(Debug, Serialize, Row)]

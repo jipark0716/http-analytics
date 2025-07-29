@@ -1,24 +1,49 @@
-use crate::response::{BasicErrorErrorResponse, ErrResponse};
+use crate::response::{BasicErrorErrorResponse, ErrResponse, ValidationErrorResponse};
 use crate::status::AppStatus;
 use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, Responder, post, web};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use validator::Validate;
 
 #[post("/api/v1/sessions")]
-async fn create_session(ctx: web::Data<AppStatus>) -> Result<CreateSessionResponse, ErrResponse> {
+async fn create_session(
+    ctx: web::Data<AppStatus>,
+    request: web::Json<CreateSessionRequest>,
+) -> Result<CreateSessionResponse, ErrResponse> {
+    let body = request.into_inner();
+    body.validate().map_err(|e| ValidationErrorResponse {
+        code: 400,
+        message: format!("validation error: {:?}", e),
+        error: e,
+    })?;
+
     let service = &ctx.session_service;
 
     let uuid = service
-        .create(1)
+        .create(
+            body.client_id.expect("client_id is required"),
+            body.device_id.expect("device_id is required"),
+        )
         .await
         .map_err(|e| BasicErrorErrorResponse {
             code: 500,
-            message: format!("fail create session: {:?}", e)
+            message: format!("fail create session: {:?}", e),
         })?;
 
     Ok(CreateSessionResponse { code: 200, uuid })
+}
+
+#[derive(Deserialize, Debug, Validate)]
+pub struct CreateSessionRequest {
+    #[serde(default)]
+    #[validate(required)]
+    pub client_id: Option<i32>,
+
+    #[serde(default)]
+    #[validate(required)]
+    pub device_id: Option<Uuid>,
 }
 
 #[derive(Serialize)]

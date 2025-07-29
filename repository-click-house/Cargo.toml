@@ -12,3 +12,4 @@ uuid = { version = "1", features = ["serde", "v4"] }
 anyhow = "1.0.98"
 tokio = "1.46.1"
 sea-orm = "1.1.14"
+serde_repr = "0.1.20"

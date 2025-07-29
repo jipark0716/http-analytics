@@ -1,12 +1,13 @@
 mod session;
 mod response;
 mod status;
-mod event;
+mod product;
+mod auth;
 
 use crate::session::create_session;
 use actix_web::{web, App, HttpServer, Responder};
 use serde::Serialize;
-use crate::event::create_start_view_product_event;
+use crate::product::create_start_view_product_event;
 use crate::response::SimpleResponse;
 use crate::status::AppStatus;
 

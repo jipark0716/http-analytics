@@ -17,6 +17,11 @@ pub const SUCCESS_RESPONSE: SimpleResponse = SimpleResponse {
     message: "success",
 };
 
+pub const CREATED_RESPONSE: SimpleResponse = SimpleResponse {
+    code: 201,
+    message: "created",
+};
+
 #[derive(Serialize)]
 pub struct SimpleResponse {
     pub code: u16,

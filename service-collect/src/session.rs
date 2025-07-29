@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 #[async_trait]
 pub trait SessionService: Send + Sync {
-    async fn create(&self, client_id: i32) -> Result<Uuid>;
+    async fn create(&self, client_id: i32, device_id: Uuid) -> Result<Uuid>;
 }
 
 pub struct SessionServiceImpl {
@@ -23,7 +23,7 @@ impl SessionServiceImpl {
 
 #[async_trait]
 impl SessionService for SessionServiceImpl {
-    async fn create(&self, client_id: i32) -> Result<Uuid> {
-        self.repository.create(client_id).await
+    async fn create(&self, client_id: i32, device_id: Uuid) -> Result<Uuid> {
+        self.repository.create(client_id, device_id).await
     }
 }

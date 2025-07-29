@@ -25,8 +25,8 @@ impl DbContext {
 
         Arc::new(Self {
             client: client.clone(),
-            insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", 10000),
-            insert_event: InsertBuffer::<Event>::new(client.clone(), "event", 10000),
+            insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", 2),
+            insert_event: InsertBuffer::<Event>::new(client.clone(), "event", 2),
         })
     }
 }
@@ -88,6 +88,7 @@ where
     }
 
     fn spawn_flusher(buffer: Arc<Mutex<Self>>) {
+        // todo 그레이스풀 셧다운 구현
         tokio::spawn(async move {
             let mut interval = tokio::time::interval(Duration::from_secs(10));
             loop {

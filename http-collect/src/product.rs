@@ -1,5 +1,4 @@
-use crate::response::{BasicErrorErrorResponse, ErrResponse, ValidationErrorResponse};
-use crate::session::CreateSessionResponse;
+use crate::response::{BasicErrorErrorResponse, ErrResponse, SimpleResponse, ValidationErrorResponse, CREATED_RESPONSE};
 use crate::status::AppStatus;
 use actix_web::{post, web};
 use serde::Deserialize;
@@ -10,7 +9,7 @@ use validator::Validate;
 async fn create_start_view_product_event(
     ctx: web::Data<AppStatus>,
     request: web::Json<CreateStartViewProductEventRequest>,
-) -> Result<CreateSessionResponse, ErrResponse> {
+) -> Result<SimpleResponse, ErrResponse> {
     let body = request.into_inner();
     body.validate().map_err(|e| ValidationErrorResponse {
         code: 400,
@@ -32,7 +31,7 @@ async fn create_start_view_product_event(
             message: format!("fail create event: {:?}", e)
         })?;
 
-    Ok(CreateSessionResponse { code: 200, uuid })
+    Ok(CREATED_RESPONSE)
 }
 
 #[derive(Debug, Deserialize, Validate)]
