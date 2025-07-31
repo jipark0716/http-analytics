@@ -7,7 +7,7 @@ services:
       - CLICKHOUSE_PASSWORD=password1234
     ports:
       - "8123:8123"   # HTTP
-      - "9000:9000"   # Native protocol (TCP)
+      - "9090:9000"   # Native protocol (TCP)
     volumes:
       - ./data/clickhouse/data:/var/lib/clickhouse          # 데이터 볼륨
       - ./clickhouse-config.xml:/help/clickhouse-server/clickhouse-config.xml

@@ -1,4 +1,5 @@
 [workspace]
-members = [ "config", "http-analyze",
+members = [ "ai-client",
+    "config","http-analyze",
     "http-collect", "repository-click-house", "service-collect",
 ]

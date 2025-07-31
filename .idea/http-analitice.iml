@@ -7,6 +7,8 @@
       <sourceFolder url="file://$MODULE_DIR$/service-collect/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/service/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ai-client/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/config/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/http-analyze/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>

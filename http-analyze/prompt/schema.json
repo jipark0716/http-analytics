@@ -1,0 +1,65 @@
+{
+    "session": {
+        "client_id": {
+            "type": "Int32",
+            "desc": "클라이언트 ID"
+        },
+        "uuid": {
+            "type": "UUID",
+            "desc": "세션 ID"
+        },
+        "device_id": {
+            "type": "UUID",
+            "desc": "기기 ID"
+        },
+        "created_at": {
+            "type": "DateTime64(6)",
+            "desc": "생성일"
+        }
+    },
+    "event": {
+        "client_id": {
+            "type": "Int32",
+            "desc": "클라이언트 ID"
+        },
+        "uuid": {
+            "type": "UUID",
+            "desc": "세션 ID"
+        },
+        "created_at": {
+            "type": "DateTime64(6)",
+            "desc": "생성일"
+        },
+        "event_type": {
+            "type": "UInt8 (enum)",
+            "desc": "타입에 따라 필수와 선택인 파라미터들이 있음",
+            "1": {
+                "desc": "상품조회 시작",
+                "required": ["product_id"],
+                "optional": []
+            },
+            "2": {
+                "desc": "로그인",
+                "required": ["login_id"],
+                "optional": ["phone_number"]
+            },
+            "3": {
+                "desc": "로그인 (세션발급할때 이미 로그인 되어 있음)",
+                "required": ["login_id"],
+                "optional": ["phone_number"]
+            }
+        },
+        "product_id": {
+            "type": "Nullable(String)",
+            "desc": "상품 번호"
+        },
+        "login_id": {
+            "type": "Nullable(String)",
+            "desc": "회원번호"
+        },
+        "phone_number": {
+            "type": "Nullable(String)",
+            "desc": "전화번호"
+        }
+    }
+}

@@ -1,6 +1,7 @@
 use crate::event::Event;
 use crate::session::Session;
 use clickhouse::{Client, Row};
+use config::DatabaseConfig;
 use serde::Serialize;
 use std::mem;
 use std::sync::Arc;
@@ -14,19 +15,19 @@ pub struct DbContext {
 }
 
 impl DbContext {
-    pub fn new() -> Arc<Self> {
+    pub fn new(config: Arc<DatabaseConfig>) -> Arc<Self> {
         let client = Arc::new(
             Client::default()
-                .with_url("http://localhost:8123")
-                .with_user("admin")
-                .with_password("password1234")
-                .with_database("event"),
+                .with_url(config.host.as_str())
+                .with_user(config.user.as_str())
+                .with_password(config.password.as_str())
+                .with_database(config.database.as_str()),
         );
 
         Arc::new(Self {
             client: client.clone(),
-            insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", 2),
-            insert_event: InsertBuffer::<Event>::new(client.clone(), "event", 2),
+            insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", config.batch_size),
+            insert_event: InsertBuffer::<Event>::new(client.clone(), "event", config.batch_size),
         })
     }
 }
@@ -75,13 +76,13 @@ where
         if self.buffer1.is_empty() {
             return Ok(());
         }
-
         mem::swap(&mut self.buffer1, &mut self.buffer2);
 
         let mut insert = self.client.insert(self.table)?;
         for row in mem::take(&mut self.buffer2) {
             insert.write(&row).await?;
         }
+
         insert.end().await?;
         self.last_flush = Instant::now();
         Ok(())

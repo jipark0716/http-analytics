@@ -1,7 +1,15 @@
 [package]
-name = "http"
+name = "http-collect"
 version = "0.1.0"
 edition = "2024"
+
+[features]
+development = []
+staging = []
+production = []
+
+[build-dependencies]
+config = { path = "../config" }
 
 [dependencies]
 actix-web = "4.11.0"
@@ -11,3 +19,4 @@ repository-click-house = { path = "../repository-click-house" }
 uuid = { version = "1.17.0", features = ["v4"] }
 validator = { version = "0.20.0", features = ["derive"]}
 anyhow = "1.0.98"
+config = { path = "../config" }
