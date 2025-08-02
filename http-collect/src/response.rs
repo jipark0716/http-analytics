@@ -1,10 +1,11 @@
 use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
-use actix_web::{HttpResponse, Responder, ResponseError};
+use actix_web::{web, HttpResponse, Responder, ResponseError};
 use serde::Serialize;
 use std::fmt;
 use std::fmt::{Display, Formatter};
-use validator::ValidationErrors;
+use validator::{Validate, ValidationErrors};
+use crate::product::CreateStartViewProductEventRequest;
 
 pub const NOT_FOUND_RESPONSE: SimpleResponse = SimpleResponse {
     code: 404,
@@ -74,6 +75,25 @@ pub struct ValidationErrorResponse {
 impl From<ValidationErrorResponse> for ErrResponse {
     fn from(e: ValidationErrorResponse) -> Self {
         ErrResponse::Validation(e)
+    }
+}
+
+impl From<ValidationErrors> for ValidationErrorResponse {
+    fn from(e: ValidationErrors) -> Self {
+        Self {
+            code: 400,
+            message: format!("validation error: {:?}", e),
+            error: e,
+        }
+    }
+}
+
+impl From<anyhow::Error> for BasicErrorErrorResponse {
+    fn from(e: anyhow::Error) -> Self {
+        Self {
+            code: 500,
+            message: format!("fail create event: {:?}", e)
+        }
     }
 }
 

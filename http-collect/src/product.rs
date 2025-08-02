@@ -1,9 +1,13 @@
+use repository_click_house::event::Event;
+use repository_click_house::event::EventBuilder;
 use crate::response::{BasicErrorErrorResponse, ErrResponse, SimpleResponse, ValidationErrorResponse, CREATED_RESPONSE};
 use crate::status::AppStatus;
 use actix_web::{post, web};
 use serde::Deserialize;
 use uuid::Uuid;
 use validator::Validate;
+use repository_click_house_macro::Event;
+use repository_click_house::event::EventType;
 
 #[post("/api/v1/events/start-view-product")]
 async fn create_start_view_product_event(
@@ -11,30 +15,20 @@ async fn create_start_view_product_event(
     request: web::Json<CreateStartViewProductEventRequest>,
 ) -> Result<SimpleResponse, ErrResponse> {
     let body = request.into_inner();
-    body.validate().map_err(|e| ValidationErrorResponse {
-        code: 400,
-        message: format!("validation error: {:?}", e),
-        error: e,
-    })?;
-
     let service = &ctx.collect_service;
 
-    let uuid = service
-        .create_start_view_product_event(
-            body.client_id.expect("client_id validated"),
-            body.uuid.expect("uuid validated"),
-            body.product_id.expect("product_id validated"),
-        )
+    body.validate().map_err(ValidationErrorResponse::from)?;
+
+    service
+        .create_event(body.into_inner())
         .await
-        .map_err(|e| BasicErrorErrorResponse {
-            code: 500,
-            message: format!("fail create event: {:?}", e)
-        })?;
+        .map_err(BasicErrorErrorResponse::from)?;
 
     Ok(CREATED_RESPONSE)
 }
 
-#[derive(Debug, Deserialize, Validate)]
+#[derive(Debug, Deserialize, Validate, Event)]
+#[event_type("ProductViewStart")]
 pub struct CreateStartViewProductEventRequest {
     #[serde(default)]
     #[validate(required)]
