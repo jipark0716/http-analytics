@@ -13,11 +13,7 @@ async fn create_session(
     request: web::Json<CreateSessionRequest>,
 ) -> Result<CreateSessionResponse, ErrResponse> {
     let body = request.into_inner();
-    body.validate().map_err(|e| ValidationErrorResponse {
-        code: 400,
-        message: format!("validation error: {:?}", e),
-        error: e,
-    })?;
+    body.validate().map_err(ValidationErrorResponse::from)?;
 
     let service = &ctx.session_service;
 
@@ -27,10 +23,7 @@ async fn create_session(
             body.device_id.expect("device_id is required"),
         )
         .await
-        .map_err(|e| BasicErrorErrorResponse {
-            code: 500,
-            message: format!("fail create session: {:?}", e),
-        })?;
+        .map_err(BasicErrorErrorResponse::from)?;
 
     Ok(CreateSessionResponse { code: 200, uuid })
 }

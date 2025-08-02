@@ -85,7 +85,6 @@ pub enum EventType {
     CheckoutStart = 58,
     PaymentStart = 59,
     PaymentComplete = 60,
-
 }
 
 pub trait EventBuilder : Sync + Send {

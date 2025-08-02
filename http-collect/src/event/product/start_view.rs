@@ -10,7 +10,7 @@ use repository_click_house_macro::Event;
 use repository_click_house::event::EventType;
 
 #[post("/api/v1/events/start-view-product")]
-async fn create_start_view_product_event(
+async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<CreateStartViewProductEventRequest>,
 ) -> Result<SimpleResponse, ErrResponse> {
