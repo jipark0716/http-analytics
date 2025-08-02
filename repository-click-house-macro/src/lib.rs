@@ -2,7 +2,7 @@ extern crate self as repository_click_house_macro;
 extern crate proc_macro;
 
 use proc_macro::TokenStream;
-use quote::{quote, ToTokens};
+use quote::quote;
 use syn;
 
 #[proc_macro_derive(Event, attributes(event_type))]
@@ -12,7 +12,6 @@ pub fn event_derive(input: TokenStream) -> TokenStream {
 }
 
 fn impl_event_macro(ast: &syn::DeriveInput) -> TokenStream {
-    let name = &ast.ident;
 
     let fields = match &ast.data {
         syn::Data::Struct(syn::DataStruct { fields: syn::Fields::Named(fields), .. }) => &fields.named,

@@ -7,10 +7,9 @@ mod event;
 use crate::response::SimpleResponse;
 use crate::session::create_session;
 use crate::status::AppStatus;
-use actix_web::{web, App, HttpServer, Responder};
+use actix_web::{web, App, HttpServer};
 use config::collect::HttpCollectConfig;
 use config::import;
-use serde::Serialize;
 
 #[cfg(feature = "development")]
 static CONFIG_BIN: &[u8] = include_bytes!("../config/development.bin");

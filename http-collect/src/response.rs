@@ -1,21 +1,20 @@
 use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
-use actix_web::{web, HttpResponse, Responder, ResponseError};
+use actix_web::{HttpResponse, Responder, ResponseError};
 use serde::Serialize;
 use std::fmt;
 use std::fmt::{Display, Formatter};
-use validator::{Validate, ValidationErrors};
-use crate::product::CreateStartViewProductEventRequest;
+use validator::ValidationErrors;
 
 pub const NOT_FOUND_RESPONSE: SimpleResponse = SimpleResponse {
     code: 404,
     message: "not found",
 };
 
-pub const SUCCESS_RESPONSE: SimpleResponse = SimpleResponse {
-    code: 200,
-    message: "success",
-};
+// pub const SUCCESS_RESPONSE: SimpleResponse = SimpleResponse {
+//     code: 200,
+//     message: "success",
+// };
 
 pub const CREATED_RESPONSE: SimpleResponse = SimpleResponse {
     code: 201,
@@ -40,7 +39,6 @@ impl Responder for SimpleResponse {
 pub enum ErrResponse {
     Validation(ValidationErrorResponse),
     BasicError(BasicErrorErrorResponse),
-    Unknown(anyhow::Error),
 }
 
 impl Display for ErrResponse {
@@ -60,7 +58,6 @@ impl ResponseError for ErrResponse {
                 StatusCode::from_u16(e.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
             )
             .json(e),
-            Self::Unknown(e) => HttpResponse::InternalServerError().body(e.to_string()),
         }
     }
 }

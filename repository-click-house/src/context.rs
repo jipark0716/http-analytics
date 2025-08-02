@@ -9,7 +9,6 @@ use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
 
 pub struct DbContext {
-    client: Arc<Client>,
     pub insert_sessions: Arc<Mutex<InsertBuffer<Session>>>,
     pub insert_event: Arc<Mutex<InsertBuffer<Event>>>,
 }
@@ -25,7 +24,6 @@ impl DbContext {
         );
 
         Arc::new(Self {
-            client: client.clone(),
             insert_sessions: InsertBuffer::<Session>::new(client.clone(), "session", config.batch_size),
             insert_event: InsertBuffer::<Event>::new(client.clone(), "event", config.batch_size),
         })

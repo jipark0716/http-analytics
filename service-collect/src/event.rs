@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use repository_click_house::event::{Event, EventBuilder, EventRepository, EventType};
+use repository_click_house::event::{Event, EventRepository};
 use std::sync::Arc;
 
 #[async_trait]
