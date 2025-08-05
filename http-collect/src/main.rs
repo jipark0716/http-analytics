@@ -1,7 +1,6 @@
 mod session;
 mod response;
 mod status;
-mod auth;
 mod event;
 
 use crate::response::SimpleResponse;

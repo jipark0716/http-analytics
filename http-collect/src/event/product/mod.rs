@@ -3,6 +3,8 @@ pub mod start_view;
 use actix_web::web;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg
-        .service(start_view::action);
+    cfg.service(
+        web::scope("product")
+            .service(start_view::action)
+    );
 }
