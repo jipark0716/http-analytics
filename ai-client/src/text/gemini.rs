@@ -39,7 +39,7 @@ pub struct GeminiResponse {
 
 #[derive(Debug, Deserialize)]
 pub struct Candidate {
-    pub content: Content,
+    content: Content,
 }
 
 pub struct GeminiClient {

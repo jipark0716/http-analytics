@@ -21,8 +21,8 @@ pub enum EventType {
     PasswordFindStart = 6,
     PasswordFindEnd = 7,
 
-    PageHide = 11,
-    PageShow = 12,
+    AppBackground = 11,
+    AppForeground = 12,
 
     CategoryViewStart = 21,
     CategoryScroll = 22,
@@ -109,6 +109,8 @@ pub struct Event {
     pub login_id: Option<String>,
 
     pub phone_number: Option<String>,
+
+    pub page_url: Option<String>,
 
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
     pub created_at: OffsetDateTime,
