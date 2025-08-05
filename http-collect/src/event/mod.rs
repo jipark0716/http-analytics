@@ -15,9 +15,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 }
 
 pub fn openapi() -> utoipa::openapi::OpenApi {
-    auth::ApiDoc::openapi()
-    // OpenApi::merge(vec![
-    //     auth::openapi(),
-    //     UserApi::openapi(),
-    // ])
+    let mut doc = auth::ApiDoc::openapi();
+    doc.merge(app::ApiDoc::openapi());
+    doc
 }
