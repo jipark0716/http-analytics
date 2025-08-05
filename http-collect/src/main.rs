@@ -9,6 +9,7 @@ use crate::status::AppStatus;
 use actix_web::{web, App, HttpServer};
 use config::collect::HttpCollectConfig;
 use config::import;
+use utoipa_swagger_ui::SwaggerUi;
 
 #[cfg(feature = "development")]
 static CONFIG_BIN: &[u8] = include_bytes!("../config/development.bin");
@@ -24,6 +25,10 @@ async fn main() -> std::io::Result<()> {
             .service(create_session)
             .configure(event::routes)
             .default_service(web::route().to(not_found))
+            .service(
+                SwaggerUi::new("/swagger-ui/{_:.*}")
+                    .url("/openapi.json", event::openapi()),
+            )
     })
     .bind(("127.0.0.1", config_for_server.clone().http.port))?
     .run()

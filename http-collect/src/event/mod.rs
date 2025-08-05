@@ -1,4 +1,5 @@
 use actix_web::web;
+use utoipa::OpenApi;
 
 mod product;
 mod auth;
@@ -11,4 +12,12 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
             .configure(auth::routes)
             .configure(app::routes)
     );
+}
+
+pub fn openapi() -> utoipa::openapi::OpenApi {
+    auth::ApiDoc::openapi()
+    // OpenApi::merge(vec![
+    //     auth::openapi(),
+    //     UserApi::openapi(),
+    // ])
 }

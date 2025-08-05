@@ -126,6 +126,7 @@ impl Default for Event {
             product_id: None,
             login_id: None,
             phone_number: None,
+            page_url: None,
             created_at: OffsetDateTime::now_utc(),
         }
     }

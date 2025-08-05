@@ -22,3 +22,5 @@ uuid = { version = "1.17.0", features = ["v4"] }
 validator = { version = "0.20.0", features = ["derive"]}
 anyhow = "1.0.98"
 config = { path = "../config" }
+utoipa = { version = "5.4.0", features = ["macros", "actix_extras", "uuid"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web"] }

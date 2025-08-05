@@ -4,6 +4,7 @@ use actix_web::{HttpResponse, Responder, ResponseError};
 use serde::Serialize;
 use std::fmt;
 use std::fmt::{Display, Formatter};
+use utoipa::ToSchema;
 use validator::ValidationErrors;
 
 pub const NOT_FOUND_RESPONSE: SimpleResponse = SimpleResponse {
@@ -21,7 +22,7 @@ pub const CREATED_RESPONSE: SimpleResponse = SimpleResponse {
     message: "created",
 };
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct SimpleResponse {
     pub code: u16,
     pub message: &'static str,

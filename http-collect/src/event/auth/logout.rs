@@ -4,11 +4,20 @@ use crate::status::AppStatus;
 use actix_web::{post, web};
 use repository_click_house_macro::Event;
 use serde::Deserialize;
+use utoipa::ToSchema;
 use uuid::Uuid;
 use validator::Validate;
 use repository_click_house::event::EventBuilder;
 use repository_click_house::event::EventType;
 
+#[utoipa::path(
+    post,
+    path = "api/v1/events/auth/logout",
+    tag = "auth",
+    responses(
+        (status = 201, description = "success", body = SimpleResponse)
+    )
+)]
 #[post("logout")]
 async fn action(
     ctx: web::Data<AppStatus>,
@@ -27,7 +36,7 @@ async fn action(
     Ok(CREATED_RESPONSE)
 }
 
-#[derive(Debug, Deserialize, Validate, Event)]
+#[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("LogOut")]
 pub struct Request {
     #[serde(default)]
