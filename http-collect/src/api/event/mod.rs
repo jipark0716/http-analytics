@@ -7,10 +7,16 @@ mod category;
 mod main;
 mod cart;
 mod faq;
+mod notice;
+mod event;
+mod product;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("events")
+            .configure(product::routes)
+            .configure(event::routes)
+            .configure(notice::routes)
             .configure(faq::routes)
             .configure(cart::routes)
             .configure(main::routes)
@@ -27,5 +33,8 @@ pub fn openapi() -> utoipa::openapi::OpenApi {
     doc.merge(main::ApiDoc::openapi());
     doc.merge(cart::ApiDoc::openapi());
     doc.merge(faq::ApiDoc::openapi());
+    doc.merge(notice::ApiDoc::openapi());
+    doc.merge(event::ApiDoc::openapi());
+    doc.merge(product::ApiDoc::openapi());
     doc
 }

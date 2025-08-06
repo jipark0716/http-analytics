@@ -44,8 +44,8 @@ pub enum EventType {
     FaqDetailView = 55,
 
     NoticeViewStart = 61,
-    NoticeScroll = 62,
-    NoticeViewEnd = 63,
+    NoticeViewEnd = 62,
+    NoticeScroll = 63,
     NoticeSearch = 64,
     NoticeDetailView = 65,
 
@@ -106,6 +106,7 @@ pub struct Event {
     pub product_option_id2: Option<String>,
     pub product_quantity: Option<u8>,
     pub keyword: Option<String>,
+    pub sort_by: Option<String>,
     pub article_id: Option<String>,
     pub login_id: Option<String>,
     pub phone_number: Option<String>,
@@ -130,6 +131,7 @@ impl Default for Event {
             product_quantity: None,
             article_id: None,
             keyword: None,
+            sort_by: None,
             login_id: None,
             phone_number: None,
             category_id: None,
