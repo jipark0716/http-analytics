@@ -20,7 +20,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
         background::action,
     ),
     components(
-        schemas(SimpleResponse)
+        schemas(SimpleResponse),
     ),
     tags(
         (name = "app", description = "어플리케이션")

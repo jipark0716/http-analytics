@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/login",
+    path = "/api/v1/events/auth/login",
     operation_id = "login",
     tag = "auth",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("Login")]
+#[schema(as = LoginRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

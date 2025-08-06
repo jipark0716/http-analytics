@@ -1,9 +1,6 @@
-mod scroll;
 mod view_start;
+mod scroll;
 mod view_end;
-mod search;
-mod like_add;
-mod like_remove;
 
 use actix_web::web;
 use utoipa::OpenApi;
@@ -11,31 +8,25 @@ use crate::response::SimpleResponse;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
-        web::scope("product")
-            .service(search::action)
-            .service(view_start::action)
+        web::scope("etc")
             .service(view_end::action)
             .service(scroll::action)
-            .service(like_add::action)
-            .service(like_remove::action)
+            .service(view_start::action)
     );
 }
 
 #[derive(OpenApi)]
 #[openapi(
     paths(
-        search::action,
-        view_start::action,
         view_end::action,
         scroll::action,
-        like_add::action,
-        like_remove::action,
+        view_start::action,
     ),
     components(
         schemas(SimpleResponse)
     ),
     tags(
-        (name = "product", description = "상품")
+        (name = "etc", description = "기타 화면")
     )
 )]
 pub struct ApiDoc;

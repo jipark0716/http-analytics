@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/cart/view-start",
+    path = "/api/v1/events/cart/view-start",
     operation_id = "view-start",
     tag = "cart",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("CartViewStart")]
+#[schema(as = CartViewStartRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

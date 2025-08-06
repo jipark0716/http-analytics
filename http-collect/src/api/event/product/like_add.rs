@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/product/add-like",
+    path = "/api/v1/events/product/add-like",
     operation_id = "add-like",
     tag = "product",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("ProductLikeAdd")]
+#[schema(as = ProductLikeAddRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/event/view-start",
+    path = "/api/v1/events/event/view-start",
     operation_id = "view-start",
     tag = "event",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("NoticeViewStart")]
+#[schema(as = NoticeViewStartRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

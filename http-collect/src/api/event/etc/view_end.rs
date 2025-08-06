@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "/api/v1/events/app/background",
-    tag = "app",
+    path = "/api/v1/events/etc/view-end",
+    operation_id = "view-end",
+    tag = "etc",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("background")]
+#[post("view-end")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,8 +38,8 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("AppBackground")]
-#[schema(as = AppBackgroundRequest)]
+#[event_type("EtcViewEnd")]
+#[schema(as = EtcViewEndRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

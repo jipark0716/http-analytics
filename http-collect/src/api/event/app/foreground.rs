@@ -1,18 +1,18 @@
-use repository_click_house::event::Event;
 use crate::response::{BasicErrorErrorResponse, ErrResponse, SimpleResponse, ValidationErrorResponse, CREATED_RESPONSE};
 use crate::status::AppStatus;
 use actix_web::{post, web};
+use repository_click_house::event::Event;
+use repository_click_house::event::EventBuilder;
+use repository_click_house::event::EventType;
 use repository_click_house_macro::Event;
 use serde::Deserialize;
 use utoipa::ToSchema;
 use uuid::Uuid;
 use validator::Validate;
-use repository_click_house::event::EventBuilder;
-use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/app/foreground",
+    path = "/api/v1/events/app/foreground",
     tag = "app",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
@@ -38,6 +38,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("AppForeground")]
+#[schema(as = AppForegroundRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

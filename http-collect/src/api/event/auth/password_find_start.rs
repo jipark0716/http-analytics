@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/password-find-start",
+    path = "/api/v1/events/auth/password-find-start",
     operation_id = "password-find-start",
     tag = "auth",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("PasswordFindStart")]
+#[schema(as = PasswordFindStartRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

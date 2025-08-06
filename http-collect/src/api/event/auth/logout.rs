@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/logout",
+    path = "/api/v1/events/auth/logout",
     operation_id = "logout",
     tag = "auth",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("LogOut")]
+#[schema(as = LogOutRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

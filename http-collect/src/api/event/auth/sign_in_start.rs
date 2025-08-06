@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/sign-in-start",
+    path = "/api/v1/events/auth/sign-in-start",
     operation_id = "sign-in-start",
     tag = "auth",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("SignInStart")]
+#[schema(as = SignInStartRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

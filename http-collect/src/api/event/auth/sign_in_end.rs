@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/sign-in-end",
+    path = "/api/v1/events/auth/sign-in-end",
     operation_id = "sign-in-end",
     tag = "auth",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("SignInEnd")]
+#[schema(as = SignInEndRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

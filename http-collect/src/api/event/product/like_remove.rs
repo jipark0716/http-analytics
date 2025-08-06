@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/product/remove-like",
+    path = "/api/v1/events/product/remove-like",
     operation_id = "remove-like",
     tag = "product",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("ProductLikeRemove")]
+#[schema(as = ProductLikeRemoveRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

@@ -10,7 +10,7 @@ use validator::Validate;
 
 #[utoipa::path(
     post,
-    path = "api/v1/sessions",
+    path = "/api/v1/sessions",
     tag = "session",
     responses(
         (status = 201, description = "success", body = CreateSessionResponse)

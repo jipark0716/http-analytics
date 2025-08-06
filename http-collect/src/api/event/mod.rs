@@ -10,10 +10,14 @@ mod faq;
 mod notice;
 mod event;
 mod product;
+mod etc;
+mod order;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("events")
+            .configure(order::routes)
+            .configure(etc::routes)
             .configure(product::routes)
             .configure(event::routes)
             .configure(notice::routes)
@@ -36,5 +40,7 @@ pub fn openapi() -> utoipa::openapi::OpenApi {
     doc.merge(notice::ApiDoc::openapi());
     doc.merge(event::ApiDoc::openapi());
     doc.merge(product::ApiDoc::openapi());
+    doc.merge(etc::ApiDoc::openapi());
+    doc.merge(order::ApiDoc::openapi());
     doc
 }

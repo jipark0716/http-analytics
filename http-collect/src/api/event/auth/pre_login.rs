@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/pre-login",
+    path = "/api/v1/events/auth/pre-login",
     operation_id = "pre-login",
     tag = "auth",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("PreLogin")]
+#[schema(as = PreLoginRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

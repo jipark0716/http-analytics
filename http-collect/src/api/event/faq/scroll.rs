@@ -12,7 +12,7 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/faq/scroll",
+    path = "/api/v1/events/faq/scroll",
     operation_id = "scroll",
     tag = "faq",
     responses(
@@ -39,6 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("FaqScroll")]
+#[schema(as = FaqScrollRequestRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
