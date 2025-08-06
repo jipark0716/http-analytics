@@ -4,11 +4,20 @@ use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;
 use actix_web::{HttpResponse, Responder, post, web};
 use serde::{Deserialize, Serialize};
+use utoipa::ToSchema;
 use uuid::Uuid;
 use validator::Validate;
 
-#[post("/api/v1/sessions")]
-async fn create_session(
+#[utoipa::path(
+    post,
+    path = "api/v1/sessions",
+    tag = "session",
+    responses(
+        (status = 201, description = "success", body = CreateSessionResponse)
+    )
+)]
+#[post("")]
+async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<CreateSessionRequest>,
 ) -> Result<CreateSessionResponse, ErrResponse> {
@@ -28,7 +37,7 @@ async fn create_session(
     Ok(CreateSessionResponse { code: 200, uuid })
 }
 
-#[derive(Deserialize, Debug, Validate)]
+#[derive(Deserialize, Debug, Validate, ToSchema)]
 pub struct CreateSessionRequest {
     #[serde(default)]
     #[validate(required)]
@@ -39,7 +48,7 @@ pub struct CreateSessionRequest {
     pub device_id: Option<Uuid>,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, ToSchema)]
 pub struct CreateSessionResponse {
     pub code: u16,
     pub uuid: Uuid,

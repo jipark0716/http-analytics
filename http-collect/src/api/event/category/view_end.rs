@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/logout",
-    tag = "auth",
+    path = "api/v1/events/category/view-end",
+    operation_id = "view-end",
+    tag = "category",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("logout")]
+#[post("view-end")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,7 +38,7 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("LogOut")]
+#[event_type("CategoryViewEnd")]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
@@ -49,8 +50,5 @@ pub struct Request {
 
     #[serde(default)]
     #[validate(required, length(min = 1))]
-    pub login_id: Option<String>,
-
-    #[serde(default)]
-    pub phone_number: Option<String>,
+    pub category_id: Option<String>,
 }

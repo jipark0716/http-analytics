@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/app/foreground",
+    path = "api/v1/events/auth/logout",
+    operation_id = "logout",
     tag = "auth",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("foreground")]
+#[post("logout")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,7 +38,7 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("AppForeground")]
+#[event_type("LogOut")]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
@@ -49,5 +50,8 @@ pub struct Request {
 
     #[serde(default)]
     #[validate(required, length(min = 1))]
-    pub page_url: Option<String>,
+    pub login_id: Option<String>,
+
+    #[serde(default)]
+    pub phone_number: Option<String>,
 }

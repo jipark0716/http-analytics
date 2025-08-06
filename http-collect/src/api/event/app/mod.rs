@@ -23,7 +23,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
         schemas(SimpleResponse)
     ),
     tags(
-        (name = "auth", description = "Authentication related endpoints")
+        (name = "app", description = "어플리케이션")
     )
 )]
 pub struct ApiDoc;

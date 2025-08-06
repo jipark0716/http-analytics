@@ -1,10 +1,8 @@
-mod session;
 mod response;
 mod status;
-mod event;
+mod api;
 
 use crate::response::SimpleResponse;
-use crate::session::create_session;
 use crate::status::AppStatus;
 use actix_web::{web, App, HttpServer};
 use config::collect::HttpCollectConfig;
@@ -19,15 +17,16 @@ async fn main() -> std::io::Result<()> {
     let config = import::<HttpCollectConfig>(CONFIG_BIN);
     let config_for_server = config.clone();
 
+    println!("{:?}", config);
+
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(AppStatus::new(config.clone())))
-            .service(create_session)
-            .configure(event::routes)
+            .configure(api::routes)
             .default_service(web::route().to(not_found))
             .service(
                 SwaggerUi::new("/swagger-ui/{_:.*}")
-                    .url("/openapi.json", event::openapi()),
+                    .url("/openapi.json", api::openapi()),
             )
     })
     .bind(("127.0.0.1", config_for_server.clone().http.port))?

@@ -38,8 +38,8 @@ pub enum EventType {
     CartViewEnd = 44,
 
     FaqViewStart = 51,
-    FaqScroll = 52,
-    FaqViewEnd = 53,
+    FaqViewEnd = 52,
+    FaqScroll = 53,
     FaqSearch = 54,
     FaqDetailView = 55,
 
@@ -96,21 +96,22 @@ pub trait EventBuilder : Sync + Send {
 pub struct Event {
     #[serde(with = "clickhouse::serde::uuid")]
     pub event_id: Uuid,
-
     pub client_id: i32,
 
     #[serde(with = "clickhouse::serde::uuid")]
     pub uuid: Uuid,
-
     pub event_type: EventType,
-
     pub product_id: Option<String>,
-
+    pub product_option_id1: Option<String>,
+    pub product_option_id2: Option<String>,
+    pub product_quantity: Option<u8>,
+    pub keyword: Option<String>,
+    pub article_id: Option<String>,
     pub login_id: Option<String>,
-
     pub phone_number: Option<String>,
-
     pub page_url: Option<String>,
+    pub category_id: Option<String>,
+    pub scroll_bucket: Option<u8>,
 
     #[serde(with = "clickhouse::serde::time::datetime64::micros")]
     pub created_at: OffsetDateTime,
@@ -124,8 +125,15 @@ impl Default for Event {
             uuid: Uuid::nil(),
             event_type: EventType::None,
             product_id: None,
+            product_option_id1: None,
+            product_option_id2: None,
+            product_quantity: None,
+            article_id: None,
+            keyword: None,
             login_id: None,
             phone_number: None,
+            category_id: None,
+            scroll_bucket: None,
             page_url: None,
             created_at: OffsetDateTime::now_utc(),
         }

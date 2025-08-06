@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/app/background",
-    tag = "auth",
+    path = "api/v1/events/main/scroll",
+    operation_id = "scroll",
+    tag = "main",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("background")]
+#[post("scroll")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,7 +38,7 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("AppBackground")]
+#[event_type("MainScroll")]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
@@ -48,6 +49,6 @@ pub struct Request {
     pub uuid: Option<Uuid>,
 
     #[serde(default)]
-    #[validate(required, length(min = 1))]
-    pub page_url: Option<String>,
+    #[validate(required)]
+    pub scroll_bucket: Option<u8>,
 }

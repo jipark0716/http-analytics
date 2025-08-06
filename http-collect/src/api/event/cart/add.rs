@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/sign-in-end",
-    tag = "auth",
+    path = "api/v1/events/cart/add",
+    operation_id = "add",
+    tag = "cart",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("sign-in-end")]
+#[post("add")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,7 +38,7 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("SignInEnd")]
+#[event_type("CartAdd")]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
@@ -46,4 +47,17 @@ pub struct Request {
     #[serde(default)]
     #[validate(required)]
     pub uuid: Option<Uuid>,
+
+    #[serde(default)]
+    #[validate(required, length(min = 1))]
+    pub product_id: Option<String>,
+
+    #[serde(default)]
+    pub product_option_id1: Option<String>,
+
+    #[serde(default)]
+    pub product_option_id2: Option<String>,
+
+    #[validate(required)]
+    pub product_quantity: Option<u8>,
 }

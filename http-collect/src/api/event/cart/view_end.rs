@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/sign-in-start",
-    tag = "auth",
+    path = "api/v1/events/cart/view-end",
+    operation_id = "view-end",
+    tag = "cart",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("sign-in-start")]
+#[post("view-end")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,7 +38,7 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("SignInStart")]
+#[event_type("CartViewEnd")]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

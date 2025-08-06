@@ -12,13 +12,14 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "api/v1/events/auth/password-find-start",
-    tag = "auth",
+    path = "api/v1/events/main/view-start",
+    operation_id = "view-start",
+    tag = "main",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
 )]
-#[post("password-find-start")]
+#[post("view-start")]
 async fn action(
     ctx: web::Data<AppStatus>,
     request: web::Json<Request>,
@@ -37,7 +38,7 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("PasswordFindStart")]
+#[event_type("MainViewStart")]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
