@@ -12,9 +12,9 @@ use repository_click_house::event::EventType;
 
 #[utoipa::path(
     post,
-    path = "/api/v1/events/order/view-start-detail",
+    path = "/api/v1/events/board/view-start-detail",
     operation_id = "view-start-detail",
-    tag = "order",
+    tag = "board",
     responses(
         (status = 201, description = "success", body = SimpleResponse)
     )
@@ -38,8 +38,8 @@ async fn action(
 }
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
-#[event_type("OrderDetailViewStart")]
-#[schema(as = OrderDetailViewStartRequest)]
+#[event_type("BoardViewStart")]
+#[schema(as = BoardViewStartRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
@@ -51,5 +51,5 @@ pub struct Request {
 
     #[serde(default)]
     #[validate(required, length(min = 1))]
-    pub order_id: Option<String>,
+    pub article_id: Option<String>,
 }

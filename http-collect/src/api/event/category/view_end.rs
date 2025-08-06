@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("CategoryViewEnd")]
-#[schema(as = CategoryViewEndRequestRequest)]
+#[schema(as = CategoryViewEndRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

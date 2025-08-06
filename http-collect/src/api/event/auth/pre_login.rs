@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("PreLogin")]
-#[schema(as = PreLoginRequestRequest)]
+#[schema(as = PreLoginRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

@@ -1,3 +1,5 @@
+extern crate core;
+
 mod response;
 mod status;
 mod api;

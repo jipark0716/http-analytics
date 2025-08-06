@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("FaqDetailView")]
-#[schema(as = FaqDetailViewRequestRequest)]
+#[schema(as = FaqDetailViewRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

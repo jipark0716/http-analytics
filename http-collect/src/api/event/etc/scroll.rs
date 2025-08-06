@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("EtcScroll")]
-#[schema(as = EtcScrollRequestRequest)]
+#[schema(as = EtcScrollRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

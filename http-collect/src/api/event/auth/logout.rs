@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("LogOut")]
-#[schema(as = LogOutRequestRequest)]
+#[schema(as = LogOutRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

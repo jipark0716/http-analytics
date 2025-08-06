@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("CartRemove")]
-#[schema(as = CartRemoveRequestRequest)]
+#[schema(as = CartRemoveRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

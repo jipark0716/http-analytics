@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("PasswordFindEnd")]
-#[schema(as = PasswordFindEndRequestRequest)]
+#[schema(as = PasswordFindEndRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

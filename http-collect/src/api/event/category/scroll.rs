@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("CategoryScroll")]
-#[schema(as = CategoryScrollRequestRequest)]
+#[schema(as = CategoryScrollRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

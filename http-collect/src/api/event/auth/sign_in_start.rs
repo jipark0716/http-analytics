@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("SignInStart")]
-#[schema(as = SignInStartRequestRequest)]
+#[schema(as = SignInStartRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

@@ -12,10 +12,14 @@ mod event;
 mod product;
 mod etc;
 mod order;
+mod board;
+mod payment;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("events")
+            .configure(payment::routes)
+            .configure(board::routes)
             .configure(order::routes)
             .configure(etc::routes)
             .configure(product::routes)
@@ -42,5 +46,7 @@ pub fn openapi() -> utoipa::openapi::OpenApi {
     doc.merge(product::ApiDoc::openapi());
     doc.merge(etc::ApiDoc::openapi());
     doc.merge(order::ApiDoc::openapi());
+    doc.merge(board::ApiDoc::openapi());
+    doc.merge(payment::ApiDoc::openapi());
     doc
 }

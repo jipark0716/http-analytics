@@ -15,4 +15,3 @@ sea-orm = "1.1.14"
 serde_repr = "0.1.20"
 time = "0.3.41"
 config = { path = "../config" }
-typed-builder = "0.21.0"

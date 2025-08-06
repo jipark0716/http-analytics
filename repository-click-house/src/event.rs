@@ -12,7 +12,7 @@ use uuid::Uuid;
 #[repr(u8)]
 pub enum EventType {
     None = 0,
-    
+
     Login = 1,
     PreLogin = 2,
     LogOut = 3,
@@ -76,19 +76,24 @@ pub enum EventType {
 
     BoardListViewStart = 111,
     BoardListViewEnd = 112,
-    BoardViewStart = 113,
-    BoardViewEnd = 114,
-    ArticleViewStart = 115,
-    ArticleViewEnd = 116,
-    ArticleWriteStart = 117,
-    ArticleWriteEnd = 118,
+    BoardSearch = 113,
+    BoardViewStart = 114,
+    BoardViewEnd = 115,
+    ArticleViewStart = 116,
+    ArticleViewEnd = 117,
+    ArticleSearch = 118,
+    ArticleWriteStart = 119,
+    ArticleWriteEnd = 120,
 
     CheckoutStart = 121,
-    PaymentStart = 122,
-    PaymentComplete = 123,
+    CheckoutStartItem = 122,
+    PaymentStart = 123,
+    PaymentStartItem = 124,
+    PaymentComplete = 125,
+    PaymentCompleteItem = 126,
 }
 
-pub trait EventBuilder : Sync + Send {
+pub trait EventBuilder: Sync + Send {
     fn into_inner(self) -> Event;
 }
 
@@ -109,6 +114,9 @@ pub struct Event {
     pub product_quantity: Option<u8>,
     pub keyword: Option<String>,
     pub sort_by: Option<String>,
+    pub page: Option<u8>,
+    pub amount: Option<u32>,
+    pub price: Option<u32>,
     pub board_id: Option<String>,
     pub article_id: Option<String>,
     pub login_id: Option<String>,
@@ -124,7 +132,7 @@ pub struct Event {
 impl Default for Event {
     fn default() -> Self {
         Self {
-            event_id: Uuid::nil(),
+            event_id: Uuid::new_v4(),
             client_id: 0,
             uuid: Uuid::nil(),
             event_type: EventType::None,
@@ -138,6 +146,9 @@ impl Default for Event {
             article_id: None,
             keyword: None,
             sort_by: None,
+            page: None,
+            amount: None,
+            price: None,
             login_id: None,
             phone_number: None,
             category_id: None,
@@ -166,10 +177,7 @@ impl EventRepositoryImpl {
 #[async_trait]
 impl EventRepository for EventRepositoryImpl {
     async fn create_event(&self, event: Event) -> anyhow::Result<()> {
-        InsertBuffer::push(
-            self.db_context.insert_event.clone(),
-            event,
-        ).await?;
+        InsertBuffer::push(self.db_context.insert_event.clone(), event).await?;
 
         Ok(())
     }

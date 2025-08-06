@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("NoticeDetailView")]
-#[schema(as = NoticeDetailViewRequestRequest)]
+#[schema(as = NoticeDetailViewRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

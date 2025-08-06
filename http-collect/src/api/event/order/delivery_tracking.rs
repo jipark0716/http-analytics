@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("DeliveryTracking")]
-#[schema(as = DeliveryTrackingRequestRequest)]
+#[schema(as = DeliveryTrackingRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

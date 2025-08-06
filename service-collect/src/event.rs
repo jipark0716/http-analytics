@@ -5,6 +5,7 @@ use std::sync::Arc;
 #[async_trait]
 pub trait CollectService: Send + Sync {
     async fn create_event(&self, event: Event) -> anyhow::Result<()>;
+    async fn create_events(&self, events: Vec<Event>) -> anyhow::Result<()>;
 }
 
 pub struct CollectServiceImpl {
@@ -23,6 +24,14 @@ impl CollectService for CollectServiceImpl {
         self.repository
             .create_event(event)
             .await?;
+
+        Ok(())
+    }
+
+    async fn create_events(&self, events: Vec<Event>) -> anyhow::Result<()> {
+        for event in events.into_iter() {
+            self.create_event(event).await?
+        }
 
         Ok(())
     }

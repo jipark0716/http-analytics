@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("Login")]
-#[schema(as = LoginRequestRequest)]
+#[schema(as = LoginRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

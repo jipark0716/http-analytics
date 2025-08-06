@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("CartViewEnd")]
-#[schema(as = CartViewEndRequestRequest)]
+#[schema(as = CartViewEndRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

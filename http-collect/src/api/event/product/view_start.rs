@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("ProductViewStart")]
-#[schema(as = ProductViewStartRequestRequest)]
+#[schema(as = ProductViewStartRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("MainScroll")]
-#[schema(as = MainScrollRequestRequest)]
+#[schema(as = MainScrollRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

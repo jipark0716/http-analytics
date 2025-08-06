@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("SignInEnd")]
-#[schema(as = SignInEndRequestRequest)]
+#[schema(as = SignInEndRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]

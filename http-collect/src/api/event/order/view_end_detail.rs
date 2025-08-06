@@ -39,7 +39,7 @@ async fn action(
 
 #[derive(Debug, Deserialize, Validate, Event, ToSchema)]
 #[event_type("OrderDetailViewEnd")]
-#[schema(as = OrderDetailViewEndRequestRequest)]
+#[schema(as = OrderDetailViewEndRequest)]
 pub struct Request {
     #[serde(default)]
     #[validate(required)]
