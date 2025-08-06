@@ -4,6 +4,7 @@ mod response;
 mod status;
 mod api;
 
+use actix_cors::Cors;
 use crate::response::SimpleResponse;
 use crate::status::AppStatus;
 use actix_web::{web, App, HttpServer};
@@ -24,6 +25,7 @@ async fn main() -> std::io::Result<()> {
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(AppStatus::new(config.clone())))
+            .wrap(Cors::permissive())
             .configure(api::routes)
             .default_service(web::route().to(not_found))
             .service(

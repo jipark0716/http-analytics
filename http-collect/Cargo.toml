@@ -14,6 +14,7 @@ config = { path = "../config" }
 [dependencies]
 time = "0.3"
 actix-web = "4.11.0"
+actix-cors = "0.7"
 serde = { version = "1.0.219", features = ["derive"] }
 service-collect = { path = "../service-collect" }
 repository-click-house = { path = "../repository-click-house" }
