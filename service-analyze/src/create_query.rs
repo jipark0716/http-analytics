@@ -3,7 +3,9 @@ use async_trait::async_trait;
 use chrono::Local;
 use std::error::Error;
 use std::sync::Arc;
+use serde::Serialize;
 
+#[derive(Serialize, PartialEq)]
 pub enum QueryType {
     None,
     List,
@@ -21,13 +23,13 @@ impl From<char> for QueryType {
 }
 
 pub struct Query {
-    query_type: QueryType,
-    query: String,
+    pub query_type: QueryType,
+    pub query: String,
 }
 
 #[async_trait]
 pub trait CreateQueryService : Send + Sync {
-    async fn create_query(self, client_id: String, prompt: String) -> anyhow::Result<Query, Box<dyn Error>>;
+    async fn create_query(&self, client_id: i32, prompt: String) -> anyhow::Result<Query, Box<dyn Error>>;
 }
 
 pub struct CreateQueryServiceImpl {
@@ -47,12 +49,12 @@ impl CreateQueryServiceImpl {
 // 회원가입 시작은했는데 완료는 안한사람 비율은 얼만큼이야?
 #[async_trait]
 impl CreateQueryService for CreateQueryServiceImpl {
-    async fn create_query(self, client_id: String, prompt: String) -> anyhow::Result<Query, Box<dyn Error>>
+    async fn create_query(&self, client_id: i32, prompt: String) -> anyhow::Result<Query, Box<dyn Error>>
     {
         let response = self.ai_client.generate_text(vec![
             Prompt {
                 role: Role::System,
-                text: self.system_prompt,
+                text: self.system_prompt.clone(),
             },
             Prompt {
                 role: Role::System,

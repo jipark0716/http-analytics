@@ -1285,10 +1285,12 @@ dependencies = [
  "ai-client",
  "config",
  "http 0.1.0",
+ "serde",
  "service-analyze",
  "tokio",
  "utoipa",
  "utoipa-swagger-ui",
+ "validator",
 ]
 
 [[package]]
@@ -2321,6 +2323,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "repository-click-house-read"
+version = "0.1.0"
+dependencies = [
+ "config",
+ "reqwest",
+]
+
+[[package]]
 name = "reqwest"
 version = "0.12.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2772,6 +2782,10 @@ dependencies = [
  "anyhow",
  "async-trait",
  "chrono",
+ "log",
+ "repository-click-house-read",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]

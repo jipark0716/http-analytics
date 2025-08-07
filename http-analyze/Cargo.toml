@@ -15,9 +15,11 @@ config = { path = "../config" }
 tokio = { version = "1.46.1", features = ["full"] }
 config = { path = "../config" }
 ai-client = { path = "../ai-client" }
-service-analyze = { path = "../service-analyze" }
 actix-web = "4.11.0"
 actix-cors = "0.7"
-utoipa = { version = "5.4.0", features = ["macros", "actix_extras", "uuid"] }
+utoipa = { version = "5.4.0", features = ["macros", "actix_extras"] }
 utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web"] }
 http = { path = "../http" }
+serde = { version = "1.0.219", features = ["derive"] }
+validator = { version = "0.20.0", features = ["derive"] }
+service-analyze = { path = "../service-analyze" }

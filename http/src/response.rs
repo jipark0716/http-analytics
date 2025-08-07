@@ -4,6 +4,7 @@ use actix_web::{HttpResponse, Responder, ResponseError};
 use serde::Serialize;
 use std::fmt;
 use std::fmt::{Display, Formatter};
+use serde::ser::StdError;
 use utoipa::ToSchema;
 use validator::ValidationErrors;
 
