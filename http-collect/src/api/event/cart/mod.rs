@@ -5,7 +5,7 @@ mod remove;
 
 use actix_web::web;
 use utoipa::OpenApi;
-use crate::response::SimpleResponse;
+use http::response::SimpleResponse;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.service(

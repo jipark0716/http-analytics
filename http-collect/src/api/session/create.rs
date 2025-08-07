@@ -1,4 +1,4 @@
-use crate::response::{BasicErrorErrorResponse, ErrResponse, ValidationErrorResponse};
+use http::response::{BasicErrorErrorResponse, ErrResponse, ValidationErrorResponse};
 use crate::status::AppStatus;
 use actix_web::body::BoxBody;
 use actix_web::http::StatusCode;

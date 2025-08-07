@@ -1,6 +1,6 @@
 use actix_web::web;
 use utoipa::OpenApi;
-use crate::response::SimpleResponse;
+use http::response::SimpleResponse;
 
 mod view_start;
 mod view_end;

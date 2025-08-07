@@ -1,4 +1,4 @@
-use crate::response::{BasicErrorErrorResponse, ErrResponse, SimpleResponse, ValidationErrorResponse, CREATED_RESPONSE};
+use http::response::{BasicErrorErrorResponse, ErrResponse, SimpleResponse, ValidationErrorResponse, CREATED_RESPONSE};
 use crate::status::AppStatus;
 use actix_web::{post, web};
 use repository_click_house::event::Event;
