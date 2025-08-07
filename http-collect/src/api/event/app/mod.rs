@@ -1,7 +1,7 @@
 mod foreground;
 mod background;
 
-use crate::response::SimpleResponse;
+use http::response::SimpleResponse;
 use actix_web::web;
 use utoipa::OpenApi;
 

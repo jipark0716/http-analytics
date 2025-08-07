@@ -1,11 +1,9 @@
 extern crate core;
 
-mod response;
 mod status;
 mod api;
 
 use actix_cors::Cors;
-use crate::response::SimpleResponse;
 use crate::status::AppStatus;
 use actix_web::{web, App, HttpServer};
 use config::collect::HttpCollectConfig;
@@ -27,7 +25,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(AppStatus::new(config.clone())))
             .wrap(Cors::permissive())
             .configure(api::routes)
-            .default_service(web::route().to(not_found))
+            .default_service(web::route().to(http::not_found))
             .service(
                 SwaggerUi::new("/swagger-ui/{_:.*}")
                     .url("/openapi.json", api::openapi()),
@@ -36,8 +34,4 @@ async fn main() -> std::io::Result<()> {
     .bind(("127.0.0.1", config_for_server.clone().http.port))?
     .run()
     .await
-}
-
-async fn not_found() -> SimpleResponse {
-    response::NOT_FOUND_RESPONSE
 }

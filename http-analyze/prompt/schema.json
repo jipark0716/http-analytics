@@ -34,6 +34,41 @@
                 "desc": "회원가입 완료",
                 "required": [],
                 "optional": []
+            },
+            "6": {
+                "desc": "비밀번호 찾기 시작",
+                "required": [],
+                "optional": []
+            },
+            "7": {
+                "desc": "비밀번호 찾기 완료",
+                "required": [],
+                "optional": []
+            },
+            "11": {
+                "desc": "백그라운드 전환",
+                "required": ["page_url"],
+                "optional": []
+            },
+            "12": {
+                "desc": "백그라운드 복귀",
+                "required": ["page_url"],
+                "optional": []
+            },
+            "21": {
+                "desc": "카테고리 페이지 조회 시작",
+                "required": ["category_id"],
+                "optional": []
+            },
+            "22": {
+                "desc": "카테고리 페이지 스크롤",
+                "required": ["category_id", "scroll_bucket"],
+                "optional": []
+            },
+            "23": {
+                "desc": "카테고리 페이지 조회 종료",
+                "required": ["category_id"],
+                "optional": []
             }
         },
         "product_id": {
@@ -47,6 +82,14 @@
         "phone_number": {
             "type": "Nullable(String)",
             "desc": "전화번호"
+        },
+        "page_url": {
+            "type": "Nullable(String)",
+            "desc": "주소 프로토콜 및 도메인 제외"
+        },
+        "scroll_bucket": {
+            "type": "Nullable(Uint8)",
+            "desc": "스크롤 위치 버킷 1=500px 이후에 60퍼센트씩 증가"
         }
     }
 }

@@ -1244,6 +1244,18 @@ dependencies = [
 
 [[package]]
 name = "http"
+version = "0.1.0"
+dependencies = [
+ "actix-web",
+ "anyhow",
+ "serde",
+ "utoipa",
+ "utoipa-swagger-ui",
+ "validator",
+]
+
+[[package]]
+name = "http"
 version = "0.2.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "601cbb57e577e2f5ef5be8e7b83f0f63994f25aa94d673e54a92d5c516d101f1"
@@ -1268,12 +1280,15 @@ dependencies = [
 name = "http-analyze"
 version = "0.1.0"
 dependencies = [
+ "actix-cors",
+ "actix-web",
  "ai-client",
  "config",
- "reqwest",
- "serde",
- "serde_json",
+ "http 0.1.0",
+ "service-analyze",
  "tokio",
+ "utoipa",
+ "utoipa-swagger-ui",
 ]
 
 [[package]]
@@ -1307,6 +1322,7 @@ dependencies = [
  "actix-web",
  "anyhow",
  "config",
+ "http 0.1.0",
  "repository-click-house",
  "repository-click-house-macro",
  "serde",
@@ -2751,6 +2767,12 @@ dependencies = [
 [[package]]
 name = "service-analyze"
 version = "0.1.0"
+dependencies = [
+ "ai-client",
+ "anyhow",
+ "async-trait",
+ "chrono",
+]
 
 [[package]]
 name = "service-collect"

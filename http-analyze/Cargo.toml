@@ -13,8 +13,11 @@ config = { path = "../config" }
 
 [dependencies]
 tokio = { version = "1.46.1", features = ["full"] }
-serde_json = "1.0.141"
-reqwest = { version = "0.12.22", features = ["json"] }
-serde = { version = "1.0.219", features = ["derive"] }
 config = { path = "../config" }
 ai-client = { path = "../ai-client" }
+service-analyze = { path = "../service-analyze" }
+actix-web = "4.11.0"
+actix-cors = "0.7"
+utoipa = { version = "5.4.0", features = ["macros", "actix_extras", "uuid"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web"] }
+http = { path = "../http" }

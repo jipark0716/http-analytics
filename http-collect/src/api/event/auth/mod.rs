@@ -6,7 +6,7 @@ mod pre_login;
 mod sign_in_end;
 mod sign_in_start;
 
-use crate::response::SimpleResponse;
+use http::response::SimpleResponse;
 use actix_web::web;
 use utoipa::OpenApi;
 

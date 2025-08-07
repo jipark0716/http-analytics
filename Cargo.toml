@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
 members = [ "ai-client",
-    "config","http-analyze",
+    "config", "http","http-analyze",
     "http-collect", "repository-click-house", "repository-click-house-macro", "service-analyze", "service-collect",
 ]

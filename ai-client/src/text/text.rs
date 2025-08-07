@@ -18,6 +18,6 @@ pub enum Role {
 }
 
 #[async_trait]
-pub trait AiClient {
+pub trait AiClient : Send + Sync {
     async fn generate_text(&self, prompt: Vec<Prompt>) -> Result<Text, Box<dyn Error>>;
 }

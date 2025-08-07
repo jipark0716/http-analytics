@@ -1,40 +1,36 @@
-use ai_client::text::gemini;
-use ai_client::text::text::{AiClient, Prompt, Role};
+mod status;
+mod api;
+
+use crate::status::AppStatus;
+use actix_cors::Cors;
+use actix_web::{web, App, HttpServer};
 use config::analyze::HttpAnalyzeConfig;
 use config::import;
+use utoipa_swagger_ui::SwaggerUi;
+use http::not_found;
 
 #[cfg(feature = "development")]
 static CONFIG_BIN: &[u8] = include_bytes!("../config/development.bin");
 
-#[cfg(feature = "development")]
-static PROMPT: &str = include_str!("../prompt/development.txt");
-
-static SCHEMA: &str = include_str!("../prompt/schema.json");
-
 #[tokio::main]
-async fn main() {
+async fn main() -> std::io::Result<()> {
     let config = import::<HttpAnalyzeConfig>(CONFIG_BIN);
+    let config_for_server = config.clone();
 
-    let client = gemini::GeminiClient::new(config.ai.clone());
+    println!("{:?}", config);
 
-    let response = client.generate_text(vec![
-        Prompt {
-            role: Role::System,
-            text: format!("{PROMPT}{SCHEMA}"),
-        },
-        Prompt {
-            role: Role::System,
-            text: "이 사용자의 client_id 는 1 이고, 오늘 날짜는 2025-07-30 타임존은 +9 날짜 조건은 로컬 자정 기준으로만 작성해".to_string(),
-        },
-        Prompt {
-            role: Role::User,
-            text: "회원가입 시작은했는데 완료는 안한사람 비율은 얼만큼이야?".to_string(),
-            // text: "오늘 주문서는 작성했지만 주문은 하지 않은 사람을 알고 싶어".to_string(),
-        },
-    ])
+    HttpServer::new(move || {
+        App::new()
+            .app_data(web::Data::new(AppStatus::new(config.clone())))
+            .wrap(Cors::permissive())
+            .configure(api::routes)
+            .default_service(web::route().to(not_found))
+            .service(
+                SwaggerUi::new("/swagger-ui/{_:.*}")
+                    .url("/openapi.json", api::openapi()),
+            )
+    })
+        .bind(("127.0.0.1", config_for_server.clone().http.port))?
+        .run()
         .await
-        .map_err(|e| format!("잼민이가 죽었다 {e}"))
-        .unwrap();
-
-    println!("{:?}", response);
 }

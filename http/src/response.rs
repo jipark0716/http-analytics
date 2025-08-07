@@ -54,11 +54,11 @@ impl ResponseError for ErrResponse {
             Self::Validation(e) => HttpResponse::build(
                 StatusCode::from_u16(e.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
             )
-            .json(e),
+                .json(e),
             Self::BasicError(e) => HttpResponse::build(
                 StatusCode::from_u16(e.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
             )
-            .json(e),
+                .json(e),
         }
     }
 }
