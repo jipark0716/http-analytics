@@ -28,7 +28,7 @@ async fn main() {
         },
         Prompt {
             role: Role::User,
-            text: "최근 2일전부터 오늘까지 1234 상품을 본 사람을 알고 싶어".to_string(),
+            text: "회원가입 시작은했는데 완료는 안한사람 비율은 얼만큼이야?".to_string(),
             // text: "오늘 주문서는 작성했지만 주문은 하지 않은 사람을 알고 싶어".to_string(),
         },
     ])

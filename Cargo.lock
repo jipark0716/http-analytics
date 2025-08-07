@@ -2749,6 +2749,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "service-analyze"
+version = "0.1.0"
+
+[[package]]
 name = "service-collect"
 version = "0.1.0"
 dependencies = [

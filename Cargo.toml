@@ -2,5 +2,5 @@
 resolver = "2"
 members = [ "ai-client",
     "config","http-analyze",
-    "http-collect", "repository-click-house", "repository-click-house-macro", "service-collect",
+    "http-collect", "repository-click-house", "repository-click-house-macro", "service-analyze", "service-collect",
 ]
