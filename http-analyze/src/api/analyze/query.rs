@@ -68,6 +68,8 @@ impl From<Query> for Response {
                 "List".to_string()
             } else if value.query_type == QueryType::Group {
                 "Group".to_string()
+            } else if value.query_type == QueryType::Unknown {
+                "Unknown".to_string()
             } else {
                 "None".to_string()
             },

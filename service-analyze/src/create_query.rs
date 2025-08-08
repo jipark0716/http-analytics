@@ -10,6 +10,7 @@ pub enum QueryType {
     None,
     List,
     Group,
+    Unknown,
 }
 
 impl From<char> for QueryType {
@@ -17,6 +18,7 @@ impl From<char> for QueryType {
         match c {
             'a' | 'A' => Self::List,
             'b' | 'B' => Self::Group,
+            'c' | 'C' => Self::Unknown,
             _ => Self::None,
         }
     }
@@ -71,6 +73,8 @@ impl CreateQueryService for CreateQueryServiceImpl {
             },
         ])
             .await?;
+
+        println!("{}", response.text);
 
         let mut chars = response.text.chars();
 
