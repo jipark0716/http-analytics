@@ -1365,7 +1365,6 @@ dependencies = [
  "actix-cors",
  "actix-files",
  "actix-web",
- "anyhow",
  "config",
  "http 0.1.0",
  "repository-click-house",
