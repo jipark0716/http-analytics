@@ -9,6 +9,7 @@ use actix_web::{web, App, HttpServer};
 use config::collect::HttpCollectConfig;
 use config::import;
 use utoipa_swagger_ui::SwaggerUi;
+use actix_files::Files;
 
 #[cfg(feature = "development")]
 static CONFIG_BIN: &[u8] = include_bytes!("../config/development.bin");
@@ -24,6 +25,7 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(AppStatus::new(config.clone())))
             .wrap(Cors::permissive())
+            .service(Files::new("/public", "./public").show_files_listing())
             .configure(api::routes)
             .default_service(web::route().to(http::not_found))
             .service(
