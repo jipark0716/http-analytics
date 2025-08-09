@@ -15,14 +15,6 @@ LLM이 마케터의 자연어 요청을 SQL로 변환하여 사용자 행동 데
 쇼핑몰 소유자의 고객의 니즈를 알 수 있는 데이터를 제공한다.   
 이 데이터를 메시징 서비스에 활용하여 메시지 발송량을 늘린다.
 
-## 장기적 목표
-안드로이드 2015년도 부터 지원했으며   
-IOS도 최근에 웹푸시를 지원하기 시작했습니다.   
-https://documentation.onesignal.com/docs/web-push-for-ios
-
-SDK를 확장하여 firebase cloud message를 사용하여   
-알림톡 발송량을 일부를 웹푸시로 발송하여 알림톡 원가를 절감한다.
-
 ## 아키텍쳐
 <img src="./simple_architect.png" width="600">
 
@@ -128,7 +120,44 @@ create table event
 </details>
 
 
-## 성능에 관하여
+## 성능
+
+성능 테스트 도구는 [wrk](https://github.com/wg/wrk)를 사용했습니다.
+6개 스레드를 사용하여 600개의 연결로 60초 동안
+몇개의 요청을 처리했는지 확인.
+
+테스트 환경
+프로세서: m3 pro
+core: 12 (6성능 / 6효율)
+memoty: 36G
+
+이 환경의 퍼포먼스는 aws ec2의 c8g.4xlarge와 비슷하다
+가격은 550 USD/Month 이다.
+
+```
+wrk.method = "POST"
+wrk.headers["Content-Type"] = "application/json"
+wrk.body = '{"client_id": 1,"device_id": "d8b69cd5-0bfe-4be6-8f0f-a5060a1e9085"}'
+
+wrk -t6 -c600 -d60s -s create_session.lua http://localhost:8080/api/v1/sessions
+```
+아래는 월 1조건의 이벤트를 수신하고 12개월동안 보관했을때의 단순계산 비용이다.
+
+특이사항
+* 웹서버 스케일 아웃의 라우팅비용 제외됨
+* 데이터 샤딩 라우팅 비용
+* tls/ssl 오버헤드 제외됨
+* 24시간 동안 균일한 데이터 수신한다는 가정
+
+| **항목** | **값**                                | **비용**             |
+|----------|--------------------------------------|--------------------|
+| 레이턴시 평균  | 13.79s                               | _                  |
+| 레이턴시 안정성 | 90.79%                               | _                  |
+| 처리 수     | 191,308 request/sec                  | 1,117.88 USD/Month |
+| 디스크 사용량  | 210.20 MiB/minute<br>108.96 TiB/year | 2,724.17 USD/Month |
+
+그렇다면 1조건의 이벤트는 어느정도의 양일까?
+
 작성중
 
 ### 서버 어플리케이션 관점
@@ -136,3 +165,11 @@ create table event
 
 ### 데이터 베이스 관점
 작성중
+
+## 장기적 목표
+안드로이드 2015년도 부터 지원했으며   
+IOS도 최근에 웹푸시를 지원하기 시작했습니다.   
+https://documentation.onesignal.com/docs/web-push-for-ios
+
+SDK를 확장하여 firebase cloud message를 사용하여   
+알림톡 발송량을 일부를 웹푸시로 발송하여 알림톡 원가를 절감한다.
