@@ -1,15 +1,18 @@
-use std::sync::Arc;
-use bincode::{Decode, Encode};
-use serde::{Deserialize, Serialize};
-use crate::{Ai, DatabaseConfig, HttpConfig};
+use crate::{Ai, DatabaseConfig, HttpConfig, TomlAi, TomlDatabaseConfig, TomlHttpConfig};
+use bincode::{BorrowDecode, Encode};
+use serde::Deserialize;
 
-#[derive(Deserialize, Serialize, Decode, Encode, Debug)]
-pub struct HttpAnalyzeConfig {
+#[derive(BorrowDecode, Debug)]
+pub struct HttpAnalyzeConfig<'de> {
     pub http: HttpConfig,
 
-    #[serde(bound(deserialize = "DatabaseConfig: Deserialize<'de>"))]
-    pub clickhouse: Arc<DatabaseConfig>,
+    pub clickhouse: DatabaseConfig<'de>,
+    pub ai: Ai<'de>,
+}
 
-    #[serde(bound(deserialize = "Ai: Deserialize<'de>"))]
-    pub ai: Arc<Ai>,
+#[derive(Deserialize, Encode, Debug)]
+pub struct TomlHttpAnalyzeConfig {
+    pub http: TomlHttpConfig,
+    pub clickhouse: TomlDatabaseConfig,
+    pub ai: TomlAi,
 }

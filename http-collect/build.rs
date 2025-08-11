@@ -1,6 +1,6 @@
 use config::export;
-use config::collect::HttpCollectConfig;
+use config::collect::{TomlHttpCollectConfig};
 
 fn main() {
-    export::<HttpCollectConfig>();
+    export::<TomlHttpCollectConfig>();
 }

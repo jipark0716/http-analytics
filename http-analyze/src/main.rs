@@ -1,6 +1,7 @@
 mod status;
 mod api;
 
+use std::sync::OnceLock;
 use crate::status::AppStatus;
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};
@@ -12,16 +13,17 @@ use http::not_found;
 #[cfg(feature = "development")]
 static CONFIG_BIN: &[u8] = include_bytes!("../config/development.bin");
 
+static CONFIG: OnceLock<HttpAnalyzeConfig<'static>> = OnceLock::new();
+
 #[tokio::main]
 async fn main() -> std::io::Result<()> {
-    let config = import::<HttpAnalyzeConfig>(CONFIG_BIN);
-    let config_for_server = config.clone();
+    CONFIG.set(import::<HttpAnalyzeConfig>(CONFIG_BIN)).unwrap();
 
-    println!("{:?}", config);
+    println!("{:?}", CONFIG.get().unwrap());
 
     HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(AppStatus::new(config.clone())))
+            .app_data(web::Data::new(AppStatus::new(CONFIG.get().unwrap())))
             .wrap(Cors::permissive())
             .configure(api::routes)
             .default_service(web::route().to(not_found))
@@ -30,7 +32,7 @@ async fn main() -> std::io::Result<()> {
                     .url("/openapi.json", api::openapi()),
             )
     })
-        .bind(("127.0.0.1", config_for_server.clone().http.port))?
+        .bind(("127.0.0.1", CONFIG.get().unwrap().http.port))?
         .run()
         .await
 }

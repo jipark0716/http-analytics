@@ -13,8 +13,8 @@ pub struct AppStatus {
 }
 
 impl AppStatus {
-    pub fn new(config: Arc<HttpAnalyzeConfig>) -> Self {
-        let ai_client = GeminiClient::new(config.ai.clone());
+    pub fn new(config: &'static HttpAnalyzeConfig<'static>) -> Self {
+        let ai_client = GeminiClient::new(&config.ai);
         let create_query_service = CreateQueryServiceImpl::new(format!("{PROMPT}{SCHEMA}").to_string(), ai_client);
         Self {
             create_query_service,

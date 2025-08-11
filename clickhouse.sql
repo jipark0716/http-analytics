@@ -39,7 +39,5 @@ create table event
     created_at         DateTime64(6)
 )
     engine = MergeTree PARTITION BY toYYYYMMDD(created_at)
-        ORDER BY (client_id, uuid, event_type, created_at)
+        ORDER BY (client_id, event_type, created_at, uuid)
         SETTINGS index_granularity = 8192;
-
-

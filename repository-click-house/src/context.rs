@@ -14,13 +14,13 @@ pub struct DbContext {
 }
 
 impl DbContext {
-    pub fn new(config: Arc<DatabaseConfig>) -> Arc<Self> {
+    pub fn new(config: &DatabaseConfig) -> Arc<Self> {
         let client = Arc::new(
             Client::default()
-                .with_url(config.host.as_str())
-                .with_user(config.user.as_str())
-                .with_password(config.password.as_str())
-                .with_database(config.database.as_str()),
+                .with_url(config.host)
+                .with_user(config.user)
+                .with_password(config.password)
+                .with_database(config.database),
         );
 
         Arc::new(Self {

@@ -2,18 +2,31 @@ pub mod collect;
 pub mod analyze;
 
 use bincode::config::standard;
-use bincode::{Decode, Encode};
-use serde::{Deserialize, Serialize};
+use bincode::{BorrowDecode, Encode};
+use serde::{Deserialize};
 use std::fs;
-use std::sync::Arc;
 
-#[derive(Deserialize, Serialize, Decode, Encode, Debug)]
+#[derive(BorrowDecode, Debug)]
 pub struct HttpConfig {
     pub port: u16,
 }
 
-#[derive(Deserialize, Serialize, Decode, Encode, Debug)]
-pub struct DatabaseConfig {
+#[derive(Deserialize, Encode, Debug)]
+pub struct TomlHttpConfig {
+    pub port: u16,
+}
+
+#[derive(BorrowDecode, Debug)]
+pub struct DatabaseConfig<'a> {
+    pub host: &'a str,
+    pub user: &'a str,
+    pub password: &'a str,
+    pub database: &'a str,
+    pub batch_size: usize,
+}
+
+#[derive(Deserialize, Encode, Debug)]
+pub struct TomlDatabaseConfig {
     pub host: String,
     pub user: String,
     pub password: String,
@@ -21,8 +34,14 @@ pub struct DatabaseConfig {
     pub batch_size: usize,
 }
 
-#[derive(Deserialize, Serialize, Decode, Encode, Debug)]
-pub struct Ai {
+#[derive(BorrowDecode, Debug)]
+pub struct Ai<'a> {
+    pub engine: &'a str,
+    pub api_key: &'a str,
+}
+
+#[derive(Deserialize, Encode, Debug)]
+pub struct TomlAi {
     pub engine: String,
     pub api_key: String,
 }
@@ -52,11 +71,11 @@ where
     fs::write(&out_path, bin).expect("write failed");
 }
 
-pub fn import<T>(bin: &[u8]) -> Arc<T>
+pub fn import<'de, T>(bin: &'de [u8]) -> T
 where
-    T: Decode<()>,
+    T: BorrowDecode<'de, ()>,
 {
-    Arc::new(bincode::decode_from_slice(bin, standard())
+    bincode::borrow_decode_from_slice(bin, standard())
         .expect("Failed to decode")
-        .0)
+        .0
 }

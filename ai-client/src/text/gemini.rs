@@ -43,16 +43,16 @@ pub struct Candidate {
 }
 
 pub struct GeminiClient {
-    key: String,
-    engine: String,
+    key: &'static str,
+    engine: &'static str,
     client: Client,
 }
 
 impl GeminiClient {
-    pub fn new(config: Arc<Ai>) -> Arc<Self> {
-        Arc::new(GeminiClient {
-            key: config.api_key.clone(),
-            engine: config.engine.clone(),
+    pub fn new(config: &Ai<'static>) -> Arc<Self> {
+        Arc::new(Self {
+            key: config.api_key,
+            engine: config.engine,
             client: Client::new(),
         })
     }
@@ -92,7 +92,7 @@ impl AiClient for GeminiClient {
                 "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent",
                 &self.engine
             ))
-            .header("x-goog-api-key", &self.key)
+            .header("x-goog-api-key", self.key)
             .header("Content-Type", "application/json")
             .json(&req)
             .send()
