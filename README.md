@@ -1,4 +1,5 @@
-# UNTITLE
+# ASK A
+### ask analytics (대화형 애널리틱스)
 
 LLM이 마케터의 자연어 요청을 SQL로 변환하여 사용자 행동 데이터를 분석하는 프로그램입니다.  
 기존 Firebase Analytics, GA4, GTM과 같은 마케팅 도구와 달리,  
