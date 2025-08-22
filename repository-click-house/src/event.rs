@@ -1,4 +1,4 @@
-use crate::context::{DbContext, InsertBuffer};
+use crate::context::DbContext;
 use async_trait::async_trait;
 use clickhouse::Row;
 use sea_orm::entity::prelude::*;
@@ -177,7 +177,7 @@ impl EventRepositoryImpl {
 #[async_trait]
 impl EventRepository for EventRepositoryImpl {
     async fn create_event(&self, event: Event) -> anyhow::Result<()> {
-        InsertBuffer::push(self.db_context.insert_event.clone(), event).await?;
+        self.db_context.insert_event.push(event).await?;
 
         Ok(())
     }

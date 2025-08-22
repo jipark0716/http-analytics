@@ -1,4 +1,4 @@
-use crate::context::{DbContext, InsertBuffer};
+use crate::context::DbContext;
 use async_trait::async_trait;
 use clickhouse::Row;
 use serde::Serialize;
@@ -43,7 +43,7 @@ impl SessionRepository for SessionRepositoryImpl {
             created_at: OffsetDateTime::now_utc(),
         };
 
-        InsertBuffer::push(self.db_context.insert_sessions.clone(), session).await?;
+        self.db_context.insert_sessions.push(session).await?;
 
         Ok(uuid)
     }
